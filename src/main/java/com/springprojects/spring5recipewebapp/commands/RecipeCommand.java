@@ -1,13 +1,12 @@
-package com.springprojects.spring5recipewebapp.domain;
+package com.springprojects.spring5recipewebapp.commands;
 
-import javax.persistence.*;
+import com.springprojects.spring5recipewebapp.domain.Difficulty;
+import lombok.NoArgsConstructor;
+
 import java.util.HashSet;
 import java.util.Set;
-
-@Entity
-public class Recipe {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@NoArgsConstructor
+public class RecipeCommand {
     private Long id;
     private String description;
     private Integer prepTime;
@@ -15,30 +14,13 @@ public class Recipe {
     private Integer servings;
     private String source;
     private String url;
-    @Lob
     private String direction;
-    //todo add
-    @Enumerated(value = EnumType.STRING)
-    private Difficulty difficulty;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients = new HashSet<>();
-
-    @Lob
+    private Set<IngredientCommand> ingredients = new HashSet<>();
     private Byte[] image;
-    @OneToOne(cascade = CascadeType.ALL)
-    private Notes notes;
-    @ManyToMany
-    @JoinTable(name = "recipe_category",
-    joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories = new HashSet<>();
+    private Difficulty difficulty;
+    private NotesCommand notes;
+    private Set<CategoryCommand> categories = new HashSet<>();
 
-    public Set<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(Set<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
 
     public Long getId() {
         return id;
@@ -104,27 +86,12 @@ public class Recipe {
         this.direction = direction;
     }
 
-    public Byte[] getImage() {
-        return image;
+    public Set<IngredientCommand> getIngredients() {
+        return ingredients;
     }
 
-    public void setImage(Byte[] iamge) {
-        this.image = iamge;
-    }
-
-    public Notes getNotes() {
-        return notes;
-    }
-
-    public void setNotes(Notes notes) {
-        this.notes = notes;
-        notes.setRecipe(this);//associate with recipe
-    }
-    //bidirectional association
-    public Recipe addIngredient(Ingredient ingredient){
-        ingredient.setRecipe(this);
-        this.ingredients.add(ingredient);
-        return this;
+    public void setIngredients(Set<IngredientCommand> ingredients) {
+        this.ingredients = ingredients;
     }
 
     public Difficulty getDifficulty() {
@@ -135,11 +102,27 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
-    public Set<Category> getCategories() {
+    public NotesCommand getNotes() {
+        return notes;
+    }
+
+    public void setNotes(NotesCommand notes) {
+        this.notes = notes;
+    }
+
+    public Set<CategoryCommand> getCategories() {
         return categories;
     }
 
-    public void setCategories(Set<Category> categories) {
+    public void setCategories(Set<CategoryCommand> categories) {
         this.categories = categories;
+    }
+
+    public Byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(Byte[] image) {
+        this.image = image;
     }
 }

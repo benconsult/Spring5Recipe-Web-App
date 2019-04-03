@@ -1,7 +1,9 @@
 package com.springprojects.spring5recipewebapp.domain;
 
-import javax.persistence.*;
+import lombok.EqualsAndHashCode;
 
+import javax.persistence.*;
+@EqualsAndHashCode(exclude = {"recipe"})
 @Entity
 public class Notes {
     @Id
